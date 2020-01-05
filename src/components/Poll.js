@@ -62,11 +62,14 @@ class Poll extends Component {
 
     render() {
 
+        if(!this.props.question)
+            return <p>Poll not found</p>
 
         const { user, question, isFullContent } = this.props;
         const { id, avatarURL, name } = user;
         const { timestamp, loading } = question;
-
+        
+        
         if(this.state.redirectToDetails)
             return <Redirect to={`/questions/${question.id}`} />
             
@@ -89,7 +92,7 @@ class Poll extends Component {
 function mapStateToProps({ questions, users, authedUser }, { id }) {
     return {
         question: questions[id],
-        user: users[questions[id].author],
+        user: questions[id] ? users[questions[id].author] : undefined,
         currentUser: authedUser ? users[authedUser] : null
     }
 }
